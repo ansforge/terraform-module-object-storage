@@ -1,5 +1,5 @@
 resource "ovh_cloud_project_user" "s3_user" {
-  description  = "S3 user for Terraform state management"
+  description  = "S3 user for bucket name: ${lower(var.s3.bucket_name)}"
   role_name    = "objectstore_operator"
   service_name = var.ovh.project_id
 }
