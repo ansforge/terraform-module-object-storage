@@ -19,6 +19,7 @@ variable "bucket_users" {
     description = optional(string, "")
     policy      = string        # "read_only" | "read_write" | "admin" | "custom"
     custom_policy_json = optional(string, null)
+    resources          = optional(list(string), ["*"]) # par défaut accès à tout le bucket
   }))
   default = []
 }
