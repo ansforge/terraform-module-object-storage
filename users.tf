@@ -29,7 +29,7 @@ locals {
 resource "ovh_cloud_project_user" "s3_users" {
   for_each = local.users_map
 
-  service_name = var.ovh_cloud_project_service_name
+  service_name = var.ovh.project_id
   description  = each.value.description
   role_name    = "objectstore_operator"
 }
@@ -40,7 +40,7 @@ resource "ovh_cloud_project_user" "s3_users" {
 resource "ovh_cloud_project_user_s3_credential" "s3_credentials" {
   for_each = local.users_map
 
-  service_name = var.ovh_cloud_project_service_name
+  service_name = var.ovh.project_id
   user_id      = ovh_cloud_project_user.s3_users[each.key].id
 }
 
@@ -50,7 +50,7 @@ resource "ovh_cloud_project_user_s3_credential" "s3_credentials" {
 resource "ovh_cloud_project_user_s3_policy" "s3_policies" {
   for_each = local.users_map
 
-  service_name = var.ovh_cloud_project_service_name
+  service_name = var.ovh.project_id
   user_id      = ovh_cloud_project_user.s3_users[each.key].id
 
   policy = jsonencode({
