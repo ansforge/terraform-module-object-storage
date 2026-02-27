@@ -20,7 +20,7 @@ locals {
     admin = ["s3:*"]
   }
 
-  users_map = { for u in var.bucket_users : u.username => u }
+  users_map = { for u in var.s3.bucket_users : u.username => u }
 }
 
 # -------------------------------------------------------
