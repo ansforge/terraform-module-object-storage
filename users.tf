@@ -30,7 +30,7 @@ resource "ovh_cloud_project_user" "s3_users" {
   for_each = local.users_map
 
   service_name = var.ovh.project_id
-  description  = each.value.description
+  description  = "Cree par Terraform pour acces s3 " + var.s3.bucket_name + ":" + each.value.description
   role_name    = "objectstore_operator"
 }
 
