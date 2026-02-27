@@ -26,7 +26,7 @@ locals {
 # -------------------------------------------------------
 # 1. Création des utilisateurs OVH Cloud Project
 # -------------------------------------------------------
-resource "ovh_cloud_project_user" "s3_users" {
+resource "ovh_cloud_project_user" "s3_extra_users" {
   for_each = local.users_map
 
   service_name = var.ovh.project_id
@@ -37,11 +37,11 @@ resource "ovh_cloud_project_user" "s3_users" {
 # -------------------------------------------------------
 # 2. Génération des credentials S3 pour chaque utilisateur
 # -------------------------------------------------------
-resource "ovh_cloud_project_user_s3_credential" "s3_credentials" {
+resource "ovh_cloud_project_user_s3_credential" "s3_extra_users_credentials" {
   for_each = local.users_map
 
   service_name = var.ovh.project_id
-  user_id      = ovh_cloud_project_user.s3_users[each.key].id
+  user_id      = ovh_cloud_project_user.s3_extra_users[each.key].id
 }
 
 # -------------------------------------------------------
@@ -51,7 +51,7 @@ resource "ovh_cloud_project_user_s3_policy" "s3_policies" {
   for_each = local.users_map
 
   service_name = var.ovh.project_id
-  user_id      = ovh_cloud_project_user.s3_users[each.key].id
+  user_id      = ovh_cloud_project_user.s3_extra_users[each.key].id
 
   policy = jsonencode({
     Version = "2012-10-17"
