@@ -10,18 +10,17 @@ variable "s3" {
 }
 
 
-# Ajout dans variables.tf
+
+# Liste des utilisateurs
 variable "bucket_users" {
-  description = "Liste des utilisateurs S3 avec leur politique d'accès respective."
+  description = "Liste des utilisateurs S3 à créer avec leur politique d'accès sur le bucket."
   type = list(object({
-    username    = string
-    access_key  = string
-    secret_key  = string
-    policy      = string # "read_only" | "read_write" | "admin" | "custom"
-    custom_policy_json = optional(string, null) # Utilisé uniquement si policy = "custom"
+    username    = string        # Nom descriptif de l'utilisateur
+    description = optional(string, "")
+    policy      = string        # "read_only" | "read_write" | "admin" | "custom"
+    custom_policy_json = optional(string, null)
   }))
   default = []
-  sensitive = true
 }
 
 variable "ovh" {
