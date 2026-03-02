@@ -63,13 +63,15 @@ resource "ovh_cloud_project_user_s3_policy" "s3_policies" {
         Action = each.value.policy == "custom" ? (
           jsondecode(each.value.custom_policy_json).actions
         ) : local.policy_actions[each.value.policy]
-        Resource = [
-          "arn:aws:s3:::${var.s3.bucket_name}", 
+        Resource = concat(
+          ["arn:aws:s3:::${var.s3.bucket_name}"],
+          [
           for path in each.value.resources :
             path == "*"
               ? "arn:aws:s3:::${var.s3.bucket_name}/*"
               : "arn:aws:s3:::${var.s3.bucket_name}/${trimprefix(path, "/")}"
         ]
+       )
       }
     ]
   })
