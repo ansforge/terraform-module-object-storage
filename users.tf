@@ -15,6 +15,8 @@ locals {
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads",
       "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload",
+      "s3:GetBucketLocation",
     ]
     admin = ["s3:*"]
   }
@@ -62,6 +64,7 @@ resource "ovh_cloud_project_user_s3_policy" "s3_policies" {
           jsondecode(each.value.custom_policy_json).actions
         ) : local.policy_actions[each.value.policy]
         Resource = [
+          "arn:aws:s3:::${var.s3.bucket_name}", 
           for path in each.value.resources :
             path == "*"
               ? "arn:aws:s3:::${var.s3.bucket_name}/*"
