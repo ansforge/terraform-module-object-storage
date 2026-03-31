@@ -55,7 +55,6 @@ resource "ovh_cloud_project_user_s3_policy" "s3_policies" {
   user_id      = ovh_cloud_project_user.s3_extra_users[each.key].id
 
   policy = jsonencode({
-    Version = "2012-10-17"
     Statement = [
       {
         Sid    = "BucketAccess-${replace(each.key, "/[^a-zA-Z0-9]/", "-")}"
@@ -66,12 +65,12 @@ resource "ovh_cloud_project_user_s3_policy" "s3_policies" {
         Resource = concat(
           ["arn:aws:s3:::${var.s3.bucket_name}"],
           [
-          for path in each.value.resources :
+            for path in each.value.resources :
             path == "*"
-              ? "arn:aws:s3:::${var.s3.bucket_name}/*"
-              : "arn:aws:s3:::${var.s3.bucket_name}/${trimprefix(path, "/")}"
-        ]
-       )
+            ? "arn:aws:s3:::${var.s3.bucket_name}/*"
+            : "arn:aws:s3:::${var.s3.bucket_name}/${trimprefix(path, "/")}"
+          ]
+        )
       }
     ]
   })
